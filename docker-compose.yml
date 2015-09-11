@@ -1,0 +1,30 @@
+web01:
+  restart: always
+  build: ./web-app
+  expose:
+    - "8000"
+  command: /usr/local/bin/uwsgi --ini sample-uwsgi.ini
+
+#web02:
+#  restart: always
+#  build: ./web-app
+#  expose:
+#    - "8000"
+#  command: /usr/local/bin/uwsgi --ini sample-uwsgi.ini
+#
+#web03:
+#  restart: always
+#  build: ./web-app
+#  expose:
+#    - "8000"
+#  command: /usr/local/bin/uwsgi --ini sample-uwsgi.ini
+
+nginx:
+  restart: always
+  build: ./nginx/
+  ports:
+    - "80:80"
+  links:
+    - web01
+#    - web02
+#    - web03
