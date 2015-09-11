@@ -5,7 +5,6 @@ This version of our project is containerized using Docker + nginx and ran using 
 
 To update from the basic container:
 
-add ansible file
 1. Copy the `docker-container.yml` into your project. Our use case for Ansible here is to have a file that is in charge of bootstrapping our servers with required/needed packages. Since most of our apps are flask apps this file is pretty easy to
 circulate amongst developers in a VCS. Additional requirements can be added in a tailored Ansible playbook or added to our `Dockerfile`.
 modify docker file to provision server with playbook
