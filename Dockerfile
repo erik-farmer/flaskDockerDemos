@@ -1,9 +1,21 @@
-FROM python:2.7.10-onbuild
+FROM ansible/ubuntu14.04-ansible:stable
 
 WORKDIR /root
 ADD application.py application.py
 ADD requirements.txt requirements.txt
 
-EXPOSE 8080
+ADD docker-container.yml /srv/ansible/docker-container.yml
+WORKDIR /srv/ansible
+RUN ansible-playbook docker-container.yml -c local
 
-CMD uwsgi --http :8080 -s /tmp/uwsgi.sock --module application --callable app
+RUN rm /etc/nginx/sites-enabled/default
+ADD nginx.conf /etc/nginx/conf.d/
+
+WORKDIR /root
+ADD sample-uwsgi.ini sample-uwsgi.ini
+EXPOSE 80
+
+CMD\
+    /etc/init.d/nginx restart && \
+    ls -l && \
+    uwsgi --ini sample-uwsgi.ini
